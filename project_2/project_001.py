@@ -15,6 +15,7 @@ def main(csvfile):
         return dict_country, dict_continent
     
     for record in all_records:
+        # both of these are the same, make a single function
         process_country(dict_country, record, header_indices)
         process_continent(dict_continent, record, header_indices)
     
@@ -73,6 +74,8 @@ def process_country(dict_country, record, header_indices):
     docstring
     """
     country = record[header_indices["location"]]
+    
+    # averages are calculated using only days with datapoints
 
     
 def process_continent(dict_continent, record, header_indices):
@@ -80,7 +83,15 @@ def process_continent(dict_continent, record, header_indices):
     docstring
     """
     continent = record[header_indices["continent"]]
+    
+    # averages are calculated using all days of month
+    
 
+def get_data(filter, ):
+    """
+    docstring
+    """
+    pass
 
 
 if __name__ == "__main__":
