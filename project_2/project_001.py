@@ -14,9 +14,9 @@ def main(csvfile):
         dict_country, dict_continent = None, None
         return dict_country, dict_continent
     
-
-    
-    
+    for record in all_records:
+        process_country(dict_country, record, header_indices)
+        process_continent(dict_continent, record, header_indices)
     
     
     #dict_country, dict_continent = get_cases(all_records, dict_country, dict_continent)
@@ -68,30 +68,18 @@ def get_header_indices(headers, valid_headers):
     return dict(zip(valid_headers, indices))
 
 
-def convert_csv_data(all_records, header_indices):
+def process_country(dict_country, record, header_indices):
     """
     docstring
     """
-    pass
+    country = record[header_indices["location"]]
+
     
-
-
-def get_cases(all_records, dict_country, dict_continent):
+def process_continent(dict_continent, record, header_indices):
     """
     docstring
     """
-    # this is used for...
-    empty_year = {"01": [], "02": [], "03": [], "04": [],
-                  "05": [], "06": [], "07": [], "08": [],
-                  "09": [], "10": [], "11": [], "12": []}
-    
-    
-    ## go through each record and append
-    #dict_year = empty_year.copy()
-    #for record in all_records:
-    #    pass
-    
-    
+    continent = record[header_indices["continent"]]
 
 
 
@@ -128,6 +116,7 @@ if __name__ == "__main__":
         - date must be in expected format else discard record
         - data is expected to be in the right type (else??)
             - any other recorded data(string where int expected)/no data is considered (0)
+            - applies to negatives too
             (are negative numbers required to be converted to 0????)
     * table headers are not in any specific order
     * if required headers are not included, terminate program
