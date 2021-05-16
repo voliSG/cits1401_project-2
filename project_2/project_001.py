@@ -5,8 +5,8 @@ def main(csvfile):
     """
     docstring
     """
-    dict_country = {}
-    dict_continent = {}
+    country_data = {}
+    continent_data = {}
     
     all_records, header_indices = extract_csv_data(csvfile)
     if all_records[0] == None:
@@ -16,22 +16,19 @@ def main(csvfile):
     
     for record in all_records:
         record = record.split(",")
-        get_data("location", dict_country, record, header_indices)
-        get_data("continent", dict_continent, record, header_indices)
+        get_data("location", country_data, record, header_indices)
+        get_data("continent", continent_data, record, header_indices)
 
         ''' dictionary schema after loop finishes running
             dict_country = {
-                "country" : {cases : {'01' : [], '02' : [], '03' : [], '04' : [],
-                                      '05' : [], '06' : [], '07' : [], '08' : [],
-                                      '09' : [], '10' : [], '11' : [], '12' : []},
+                "country" : {"cases" : [[], [], [], [], [], [], [], [], [], [], [], []],
 
-                             deaths : {'01' : [], '02' : [], '03' : [], '04' : [],
-                                       '05' : [], '06' : [], '07' : [], '08' : [],
-                                       '09' : [], '10' : [], '11' : [], '12' : []}
+                             "deaths" : [[], [], [], [], [], [], [], [], [], [], [], []]
             }
         '''
         
-    process_data(dict_country, dict_continent)
+    dict_country = process_data("country", country_data)
+    dict_continent = process_data("continent", continent_data)
     return dict_country, dict_continent       
         
 
@@ -84,7 +81,7 @@ def get_header_indices(headers, valid_headers):
     return dict(zip(valid_headers, indices))
     
 
-def get_data(criteria_filter, dict_filter, record, header_indices):
+def get_data(criteria_filter, dict_data, record, header_indices):
     """
     docstring
     """
@@ -108,43 +105,42 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
     except Exception:
         return None
     else:
-        month = date[1]
+        # subtract one for list index
+        month = date[1] - 1
     
     # initialise if criteria (country/continent) is already in its respective dictionary
-    if criteria not in dict_filter:
-        dict_filter[criteria] = {"cases" : {'1' : [], '2' : [], '3' : [], '4' : [],
-                                            '5' : [], '6' : [], '7' : [], '8' : [],
-                                            '9' : [], '10' : [], '11' : [], '12' : []},
+    if criteria not in dict_data:
+        dict_data[criteria] = {"cases" : [[], [], [], [], [], [], [], [], [], [], [], []],
 
-                                 "deaths" : {'1' : [], '2' : [], '3' : [], '4' : [],
-                                             '5' : [], '6' : [], '7' : [], '8' : [],
-                                             '9' : [], '10' : [], '11' : [], '12' : []}
-                                }
+                               "deaths" : [[], [], [], [], [], [], [], [], [], [], [], []]}
         
     # type and range check new_cases
     try:
         if int(record[header_indices["new_cases"]]) >= 0:
-            dict_filter[criteria]["cases"][str(month)].append(int(record[header_indices["new_cases"]]))
+            dict_data[criteria]["cases"][month].append(int(record[header_indices["new_cases"]]))
         else:
-            dict_filter[criteria]["cases"][str(month)].append(0)
+            dict_data[criteria]["cases"][month].append(0)
     except Exception:
-        dict_filter[criteria]["cases"][str(month)].append(0)
+        dict_data[criteria]["cases"][month].append(0)
     
     # type and range check new_deaths
     try:
         if int(record[header_indices["new_deaths"]]) >= 0:
-            dict_filter[criteria]["deaths"][str(month)].append(int(record[header_indices["new_deaths"]]))
+            dict_data[criteria]["deaths"][month].append(int(record[header_indices["new_deaths"]]))
         else:
-            dict_filter[criteria]["deaths"][str(month)].append(0)
+            dict_data[criteria]["deaths"][month].append(0)
     except Exception:
-        dict_filter[criteria]["deaths"][str(month)].append(0)
+        dict_data[criteria]["deaths"][month].append(0)
 
 
-def process_data(dict_country, dict_continent):
+def process_data(criteria_filter, dict_data):
     """
     docstring
     """
-    return None 
+    # link current country/continent dictionary
+    dict_return = {key:[] for key in dict_data.keys()}
+    print(dict_return)
+    return None
     '''
     if criteria_filter == "country":
         pass
