@@ -15,7 +15,7 @@ def main(csvfile):
         return dict_country, dict_continent
     
     for record in all_records:
-        get_data("country", dict_country, record, header_indices)
+        get_data("location", dict_country, record, header_indices)
         get_data("continent", dict_continent, record, header_indices)
 
         ''' dictionary schema after loop finishes running
