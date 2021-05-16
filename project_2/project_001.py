@@ -49,7 +49,7 @@ def extract_csv_data(csvfile):
 
         headers = all_records[0].split(",")
         # strip spaces from headers
-        headers = [header.split() for header in headers]
+        headers = [header.strip() for header in headers]
         
         valid_headers = ["continent", "location", "date", "new_cases", "new_deaths"]
 
@@ -141,7 +141,7 @@ def process_data(dict_country, dict_continent):
 
 if __name__ == "__main__":
     main("Covid-data-for-project-2-sample.csv")
-    main("Covid-data-for-project-2-csv")
+    #main("Covid-data-for-project-2-csv")
     #main("Covid-data-for-project-2-sample copy.csv")
     #main(True)
     
