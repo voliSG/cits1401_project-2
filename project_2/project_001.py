@@ -92,7 +92,7 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
     
     # get month from record; check format and range
     try:
-        month = record[header_indices[date]].split("/")
+        month = record[header_indices["date"]].split("/")
         
         # will raise an IndexError if [day, month, year] not returned by .split()
         month = [int(month[i].strip()) for i in range(0,4)]
@@ -107,11 +107,21 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
     except Exception:
         return None
     
-    # check if criteria (country/continent) is already in its respective dictionary
-    if criteria in dict_filter:
-        pass
-    else:
-        pass   
+    # initialise if criteria (country/continent) is already in its respective dictionary
+    if criteria not in dict_filter:
+        dict_filter[criteria] = {"cases" : {'01' : [], '02' : [], '03' : [], '04' : [],
+                                            '05' : [], '06' : [], '07' : [], '08' : [],
+                                            '09' : [], '10' : [], '11' : [], '12' : []},
+
+                                 "deaths" : {'01' : [], '02' : [], '03' : [], '04' : [],
+                                             '05' : [], '06' : [], '07' : [], '08' : [],
+                                             '09' : [], '10' : [], '11' : [], '12' : []}
+                                }
+        
+    # type and range check new_cases
+    
+    
+    # type and range check new_deaths
     
 
 def process_data(dict_country, dict_continent):
@@ -131,7 +141,7 @@ def process_data(dict_country, dict_continent):
 
 if __name__ == "__main__":
     main("Covid-data-for-project-2-sample.csv")
-    #main("Covid-data-for-project-2-csv")
+    main("Covid-data-for-project-2-csv")
     #main("Covid-data-for-project-2-sample copy.csv")
     #main(True)
     
@@ -163,7 +173,6 @@ if __name__ == "__main__":
         - data is expected to be in the right type (else??)
             - any other recorded data(string where int expected)/no data is considered (0)
             - applies to negatives too
-            (are negative numbers required to be converted to 0????)
     * table headers are not in any specific order
     * if required headers are not included, terminate program
 
