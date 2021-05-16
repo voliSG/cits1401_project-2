@@ -26,7 +26,7 @@ def main(csvfile):
                              "deaths" : [[], [], [], [], [], [], [], [], [], [], [], []]
             }
         '''
-        
+
     dict_country = process_data("country", country_data)
     dict_continent = process_data("continent", continent_data)
     return dict_country, dict_continent       
@@ -86,7 +86,7 @@ def get_data(criteria_filter, dict_data, record, header_indices):
     docstring
     """
     # get name of country or continent, in order to sort
-    criteria = record[header_indices[criteria_filter]]
+    criteria = record[header_indices[criteria_filter]].strip()
     
     # get month from record; check format and range
     try:
@@ -137,10 +137,25 @@ def process_data(criteria_filter, dict_data):
     """
     docstring
     """
-    # link current country/continent dictionary
-    dict_return = {key:[] for key in dict_data.keys()}
-    print(dict_return)
-    return None
+    # create dict that holds statistical data
+    
+    # dict_return = {key:[] for key in dict_data.keys()}
+    dict_return = {}
+
+    
+    # loop though dict keys and add them to dict_return??
+    for item in dict_data:
+        dict_return[item] = []
+        
+        process_month("cases", item, dict_data)
+        process_month("cases", item, dict_data)
+        
+        # can be done in function
+        '''
+        for month in dict_data[item]["count"]:
+            total = sum(month) '''
+    
+    return dict_return
     '''
     if criteria_filter == "country":
         pass
@@ -149,6 +164,16 @@ def process_data(criteria_filter, dict_data):
     # averages are calculated using only days with datapoints - country
     # averages are calculated using all days of month - continent
     '''
+
+
+def process_month(data_type, item, dict_data):
+    """
+    docstring
+    """
+    data_type_return = []
+    
+    return data_type_return
+    
 
 
 if __name__ == "__main__":
@@ -195,4 +220,8 @@ if __name__ == "__main__":
         - date
         - new_cases
         - new_deaths
+        
+    # if country or continent is blank
+    if criteria == "":
+        return None
 '''
