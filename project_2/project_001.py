@@ -15,6 +15,7 @@ def main(csvfile):
         return dict_country, dict_continent
     
     for record in all_records:
+        record = record.split(",")
         get_data("location", dict_country, record, header_indices)
         get_data("continent", dict_continent, record, header_indices)
 
@@ -25,11 +26,12 @@ def main(csvfile):
                                       '09' : [], '10' : [], '11' : [], '12' : []},
 
                              deaths : {'01' : [], '02' : [], '03' : [], '04' : [],
-                                      '05' : [], '06' : [], '07' : [], '08' : [],
-                                      '09' : [], '10' : [], '11' : [], '12' : []}
+                                       '05' : [], '06' : [], '07' : [], '08' : [],
+                                       '09' : [], '10' : [], '11' : [], '12' : []}
             }
         '''
-        
+    print(dict_country["afghanistan"])
+    print(dict_continent["europe"])
     process_data(dict_country, dict_continent)
     return dict_country, dict_continent       
         
@@ -92,13 +94,13 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
     
     # get month from record; check format and range
     try:
-        month = record[header_indices["date"]].split("/")
+        date = record[header_indices["date"]].split("/")
         
         # will raise an IndexError if [day, month, year] not returned by .split()
-        month = [int(month[i].strip()) for i in range(0,4)]
-        
+        date = [int(date[i].strip()) for i in range(0,3)]
+
         # range check month (is month between 1 and 12 inclusive)
-        if month[1] not in range(0, 13):
+        if date[1] not in range(0, 13):
             raise Exception
 
     # if there is a problem with the format then return None, the next record will run
@@ -106,23 +108,37 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
         return None
     except Exception:
         return None
+    else:
+        month = date[1]
     
     # initialise if criteria (country/continent) is already in its respective dictionary
     if criteria not in dict_filter:
-        dict_filter[criteria] = {"cases" : {'01' : [], '02' : [], '03' : [], '04' : [],
-                                            '05' : [], '06' : [], '07' : [], '08' : [],
-                                            '09' : [], '10' : [], '11' : [], '12' : []},
+        dict_filter[criteria] = {"cases" : {'1' : [], '2' : [], '3' : [], '4' : [],
+                                            '5' : [], '6' : [], '7' : [], '8' : [],
+                                            '9' : [], '10' : [], '11' : [], '12' : []},
 
-                                 "deaths" : {'01' : [], '02' : [], '03' : [], '04' : [],
-                                             '05' : [], '06' : [], '07' : [], '08' : [],
-                                             '09' : [], '10' : [], '11' : [], '12' : []}
+                                 "deaths" : {'1' : [], '2' : [], '3' : [], '4' : [],
+                                             '5' : [], '6' : [], '7' : [], '8' : [],
+                                             '9' : [], '10' : [], '11' : [], '12' : []}
                                 }
         
     # type and range check new_cases
-    
+    try:
+        if int(record[header_indices["new_cases"]]) >= 0:
+            dict_filter[criteria]["cases"][str(month)].append(int(record[header_indices["new_cases"]]))
+        else:
+            dict_filter[criteria]["cases"][str(month)].append(0)
+    except Exception:
+        dict_filter[criteria]["cases"][str(month)].append(0)
     
     # type and range check new_deaths
-    
+    try:
+        if int(record[header_indices["new_deaths"]]) >= 0:
+            dict_filter[criteria]["deaths"][str(month)].append(int(record[header_indices["new_deaths"]]))
+        else:
+            dict_filter[criteria]["deaths"][str(month)].append(0)
+    except Exception:
+        dict_filter[criteria]["deaths"][str(month)].append(0)
 
 def process_data(dict_country, dict_continent):
     """
