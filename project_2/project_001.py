@@ -30,8 +30,7 @@ def main(csvfile):
                                        '09' : [], '10' : [], '11' : [], '12' : []}
             }
         '''
-    print(dict_country["afghanistan"])
-    print(dict_continent["europe"])
+        
     process_data(dict_country, dict_continent)
     return dict_country, dict_continent       
         
@@ -139,6 +138,7 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
             dict_filter[criteria]["deaths"][str(month)].append(0)
     except Exception:
         dict_filter[criteria]["deaths"][str(month)].append(0)
+
 
 def process_data(dict_country, dict_continent):
     """
