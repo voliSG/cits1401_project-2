@@ -15,13 +15,24 @@ def main(csvfile):
         return dict_country, dict_continent
     
     for record in all_records:
-        # both of these are the same, make a single function
-        process_country(dict_country, record, header_indices)
-        process_continent(dict_continent, record, header_indices)
-    
-    
-    #dict_country, dict_continent = get_cases(all_records, dict_country, dict_continent)
+        get_data("country", dict_country, record, header_indices)
+        get_data("continent", dict_continent, record, header_indices)
 
+        ''' dictionary schema after loop finishes running
+            dict_country = {
+                "country" : {cases : {'01' : [], '02' : [], '03' : [], '04' : [],
+                                      '05' : [], '06' : [], '07' : [], '08' : [],
+                                      '09' : [], '10' : [], '11' : [], '12' : []},
+
+                             deaths : {'01' : [], '02' : [], '03' : [], '04' : [],
+                                      '05' : [], '06' : [], '07' : [], '08' : [],
+                                      '09' : [], '10' : [], '11' : [], '12' : []}
+            }
+        '''
+        
+    process_data(dict_country, dict_continent)
+    return dict_country, dict_continent       
+        
 
 def extract_csv_data(csvfile):
     """
@@ -67,31 +78,29 @@ def get_header_indices(headers, valid_headers):
     """
     indices = [headers.index(header) for header in valid_headers]
     return dict(zip(valid_headers, indices))
+    
 
-
-def process_country(dict_country, record, header_indices):
+def get_data(criteria_filter, dict_filter, record, header_indices):
     """
     docstring
     """
-    country = record[header_indices["location"]]
+    # get name of country or continent, in order to sort
+    criteria = record[header_indices[criteria_filter]]
     
-    # averages are calculated using only days with datapoints
 
-    
-def process_continent(dict_continent, record, header_indices):
+def process_data(dict_country, dict_continent):
     """
     docstring
     """
-    continent = record[header_indices["continent"]]
-    
-    # averages are calculated using all days of month
-    
-
-def get_data(filter, ):
-    """
-    docstring
-    """
-    pass
+    pass 
+    '''
+    if criteria_filter == "country":
+        pass
+    else:
+        pass
+    # averages are calculated using only days with datapoints - country
+    # averages are calculated using all days of month - continent
+    '''
 
 
 if __name__ == "__main__":
