@@ -128,7 +128,7 @@ def process_data(dict_country, dict_continent):
     """
     docstring
     """
-    pass 
+    return None 
     '''
     if criteria_filter == "country":
         pass
@@ -140,7 +140,7 @@ def process_data(dict_country, dict_continent):
 
 
 if __name__ == "__main__":
-    main("Covid-data-for-project-2-sample.csv")
+    print(main("Covid-data-for-project-2-sample.csv"))
     #main("Covid-data-for-project-2-csv")
     #main("Covid-data-for-project-2-sample copy.csv")
     #main(True)
