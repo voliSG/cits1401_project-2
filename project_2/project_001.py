@@ -40,7 +40,7 @@ def extract_csv_data(csvfile):
     """
     try:
         # this is needed as open() method still creates a TextIOWrapper object when int or bool values are input
-        # when the .read() method is called on this object, the python backend is terminated by thonny rather than throwing an exception
+        # when the .read() method is called on this object, the python backend is terminated by thonny rather than raising an exception
         if type(csvfile) != type(""):
             raise TypeError
         
@@ -48,6 +48,9 @@ def extract_csv_data(csvfile):
             all_records = infile.read().lower().split("\n")
 
         headers = all_records[0].split(",")
+        # strip spaces from headers
+        headers = [header.split() for header in headers]
+        
         valid_headers = ["continent", "location", "date", "new_cases", "new_deaths"]
 
         if not set(valid_headers).issubset(headers):
@@ -86,6 +89,29 @@ def get_data(criteria_filter, dict_filter, record, header_indices):
     """
     # get name of country or continent, in order to sort
     criteria = record[header_indices[criteria_filter]]
+    
+    # get month from record; check format and range
+    try:
+        month = record[header_indices[date]].split("/")
+        
+        # will raise an IndexError if [day, month, year] not returned by .split()
+        month = [int(month[i].strip()) for i in range(0,4)]
+        
+        # range check month (is month between 1 and 12 inclusive)
+        if month[1] not in range(0, 13):
+            raise Exception
+
+    # if there is a problem with the format then return None, the next record will run
+    except IndexError:
+        return None
+    except Exception:
+        return None
+    
+    # check if criteria (country/continent) is already in its respective dictionary
+    if criteria in dict_filter:
+        pass
+    else:
+        pass   
     
 
 def process_data(dict_country, dict_continent):
