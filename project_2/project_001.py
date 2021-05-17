@@ -145,10 +145,11 @@ def process_data(criteria_filter, dict_data):
     
     # loop though dict keys and add them to dict_return??
     for item in dict_data:
-        dict_return[item] = []
+        cases_data, cases_aboveAvg = process_month("cases", criteria_filter, item, dict_data)
+        deaths_data, deaths_aboveAvg = process_month("deaths", criteria_filter, item, dict_data)
         
-        process_month("cases", item, dict_data)
-        process_month("cases", item, dict_data)
+        dict_return[item] = [cases_data, deaths_data, cases_aboveAvg, deaths_aboveAvg]
+        
         
         # can be done in function
         '''
@@ -166,13 +167,29 @@ def process_data(criteria_filter, dict_data):
     '''
 
 
-def process_month(data_type, item, dict_data):
+def process_month(data_type, criteria_filter, item, dict_data):
     """
     docstring
     """
-    data_type_return = []
+    year_data = []
+    year_aboveAvg = []
     
-    return data_type_return
+    for month in dict_data[item][data_type]:
+        month_total = sum(month) 
+        year_data.append(month_total)
+        
+        if criteria_filter == "country":
+            month_avg = month_total/len(month)
+        # if criteria_filter == "continent"
+        else:
+            month_avg = month_total/[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dict_data[item][data_type].index(month)]
+        
+        aboveAvg_count = 0
+        for case in month:
+            pass
+            
+    
+    return year_data, year_aboveAvg
     
 
 
