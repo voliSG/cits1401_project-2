@@ -138,33 +138,16 @@ def process_data(criteria_filter, dict_data):
     docstring
     """
     # create dict that holds statistical data
-    
-    # dict_return = {key:[] for key in dict_data.keys()}
     dict_return = {}
-
-    
+   
     # loop though dict keys and add them to dict_return??
     for item in dict_data:
         cases_data, cases_aboveAvg = process_month("cases", criteria_filter, item, dict_data)
         deaths_data, deaths_aboveAvg = process_month("deaths", criteria_filter, item, dict_data)
         
         dict_return[item] = [cases_data, deaths_data, cases_aboveAvg, deaths_aboveAvg]
-        
-        
-        # can be done in function
-        '''
-        for month in dict_data[item]["count"]:
-            total = sum(month) '''
-    
+
     return dict_return
-    '''
-    if criteria_filter == "country":
-        pass
-    else:
-        pass
-    # averages are calculated using only days with datapoints - country
-    # averages are calculated using all days of month - continent
-    '''
 
 
 def process_month(data_type, criteria_filter, item, dict_data):
