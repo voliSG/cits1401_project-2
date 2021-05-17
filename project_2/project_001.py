@@ -90,7 +90,7 @@ def get_data(criteria_filter, dict_data, record, header_indices):
     
     # get month from record; check format and range
     try:
-        date = record[header_indices["date"]].split("/")
+        date = record[header_indices["date"]].strip().split("/")
         
         # will raise an IndexError if [day, month, year] not returned by .split()
         date = [int(date[i].strip()) for i in range(0,3)]
@@ -183,55 +183,3 @@ def process_month(data_type, criteria_filter, item, dict_data):
             
     
     return year_data, year_aboveAvg
-    
-
-
-if __name__ == "__main__":
-    print(main("Covid-data-for-project-2-sample.csv"))
-    #main("Covid-data-for-project-2-csv")
-    #main("Covid-data-for-project-2-sample copy.csv")
-    #main(True)
-    
-    
-'''Outputs:
-    * country dict
-        - list containing total number of recorded positive cases of C19 for each month of the year
-        - same as above but with deaths
-        - list containing total no of days for each month of year
-          when recorded positive cases is greater than average recorded positive cases of that month
-        - list containing total no of days for each month of year
-          when recorded deaths for that month is greater than average deaths for each month of the year
-          
-          (1+2 is one function)
-          (3+4 is one function)
-    
-    * continent dict
-        - same as above but account for all days in a month
-    
-   REQUIREMENTS:
-    * all text converted to lowercase (can do that if using .read().lower())
-    * averages are calculated only using days that have recorded data (COUNTRY OUTPUT ONLY)
-    * assume data for all days of month exist for CONTINENT OUTPUT
-        - i.e only 15 days have recorded cases... average is out of 15 days not 30
-    * csvfile validation - cannot be found or opened
-        - print message then return None
-    * file data needs to be checked for validity
-        - date must be in expected format else discard record
-        - data is expected to be in the right type (else??)
-            - any other recorded data(string where int expected)/no data is considered (0)
-            - applies to negatives too
-    * table headers are not in any specific order
-    * if required headers are not included, terminate program
-
-   Notes:
-    * figure out required columns  
-        - continent
-        - location
-        - date
-        - new_cases
-        - new_deaths
-        
-    # if country or continent is blank
-    if criteria == "":
-        return None
-'''
