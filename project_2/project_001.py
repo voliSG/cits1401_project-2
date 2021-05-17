@@ -179,7 +179,14 @@ def process_month(data_type, criteria_filter, item, dict_data):
         year_data.append(month_total)
         
         if criteria_filter == "country":
-            month_avg = month_total/len(month)
+            
+            # account for no data in month
+            try:
+                month_avg = month_total/len(month)
+            except ZeroDivisionError:
+                year_aboveAvg.append(0)
+                return year_data, year_aboveAvg
+                
         # if criteria_filter == "continent"
         else:
             month_avg = month_total/[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dict_data[item][data_type].index(month)]
