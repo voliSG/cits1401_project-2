@@ -3,7 +3,7 @@
 
 def main(csvfile):
     """
-    docstring
+    returns dictionary containing statistics for all countries and continents
     """
     country_data = {}
     continent_data = {}
@@ -18,12 +18,12 @@ def main(csvfile):
         record = record.split(",")
         get_data("location", country_data, record, header_indices)
         get_data("continent", continent_data, record, header_indices)
-
+        
         ''' dictionary schema after loop finishes running
             dict_country = {
-                "country" : {"cases" : [[], [], [], [], [], [], [], [], [], [], [], []],
+                "country1" : {"cases" : [[], [], [], [], [], [], [], [], [], [], [], []],
 
-                             "deaths" : [[], [], [], [], [], [], [], [], [], [], [], []]
+                              "deaths" : [[], [], [], [], [], [], [], [], [], [], [], []]
             }
         '''
 
@@ -34,7 +34,7 @@ def main(csvfile):
 
 def extract_csv_data(csvfile):
     """
-    docstring
+    returns a list with all lines of csv as a string and a dictionary that contains the index of the required headers in the csv file
     """
     try:
         # this is needed as open() method still creates a TextIOWrapper object when int or bool values are input
@@ -75,7 +75,8 @@ def extract_csv_data(csvfile):
     
 def get_header_indices(headers, valid_headers):
     """
-    docstring
+    returns a dictionary that holds the index of the required headers
+    {"header1" : <index>, "header2" : <index>...}
     """
     indices = [headers.index(header) for header in valid_headers]
     return dict(zip(valid_headers, indices))
@@ -83,7 +84,7 @@ def get_header_indices(headers, valid_headers):
 
 def get_data(criteria_filter, dict_data, record, header_indices):
     """
-    docstring
+    adds data from current record into relevant country/continent dictionary
     """
     # get name of country or continent, in order to sort
     criteria = record[header_indices[criteria_filter]].strip()
@@ -135,7 +136,7 @@ def get_data(criteria_filter, dict_data, record, header_indices):
 
 def process_data(criteria_filter, dict_data):
     """
-    docstring
+    inputs dictionary of data to be processed and returns dictionary of statistics
     """
     # create dict that holds statistical data
     dict_return = {}
@@ -152,7 +153,7 @@ def process_data(criteria_filter, dict_data):
 
 def process_month(data_type, criteria_filter, item, dict_data):
     """
-    docstring
+    inputs country/continent data and returns statistics for cases/deaths
     """
     year_data = []
     year_aboveAvg = []
@@ -172,6 +173,7 @@ def process_month(data_type, criteria_filter, item, dict_data):
                 
         # if criteria_filter == "continent"
         else:
+            # continent takes average for all days in month
             month_avg = month_total/[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dict_data[item][data_type].index(month)]
         
         aboveAvg_count = 0
@@ -179,7 +181,6 @@ def process_month(data_type, criteria_filter, item, dict_data):
             if case > month_avg:
                 aboveAvg_count += 1
 
-        year_aboveAvg.append(aboveAvg_count)
-            
+        year_aboveAvg.append(aboveAvg_count)      
     
     return year_data, year_aboveAvg
