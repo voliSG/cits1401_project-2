@@ -186,7 +186,10 @@ def process_month(data_type, criteria_filter, item, dict_data):
         
         aboveAvg_count = 0
         for case in month:
-            pass
+            if case > month_avg:
+                aboveAvg_count += 1
+
+        year_aboveAvg.append(aboveAvg_count)
             
     
     return year_data, year_aboveAvg
