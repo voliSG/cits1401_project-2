@@ -169,7 +169,7 @@ def process_month(data_type, criteria_filter, item, dict_data):
                 month_avg = month_total/len(month)
             except ZeroDivisionError:
                 year_aboveAvg.append(0)
-                return year_data, year_aboveAvg
+                continue
                 
         # if criteria_filter == "continent"
         else:
